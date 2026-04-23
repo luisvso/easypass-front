@@ -1,27 +1,34 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
+import VisitorCard from "../components/VisitorCard";
 import IconAddPlus from "../icons/iconAddPlus";
-import VisitorCard from "../components/VisitorCard"
 
 export default function Index() {
   return (
     <View style={styles.container}>
       <Header />
-      <View style={styles.content}>
-        <View style={styles.viewWelcome}>
-          <Text style={styles.title}>Olá, Guilherme</Text>
-          <Text style={styles.subtitle}>
-            Gerencie seus visitantes recorrentes
-          </Text>
-        </View>
-        <Pressable style={styles.buttonAdd}>
-          <View style={styles.iconCircle}>
-            <IconAddPlus width={20} height={20} />
+      <ScrollView>
+        <View style={styles.content}>
+          <View style={styles.viewWelcome}>
+            <Text style={styles.title}>Olá, Guilherme</Text>
+            <Text style={styles.subtitle}>
+              Gerencie seus visitantes recorrentes
+            </Text>
           </View>
-          <Text style={styles.buttonText}>Cadastrar novo visitante</Text>
-        </Pressable>
-        <VisitorCard/>
-      </View>
+          <Pressable style={styles.buttonAdd}>
+            <View style={styles.iconCircle}>
+              <IconAddPlus width={20} height={20} />
+            </View>
+            <Text style={styles.buttonText}>Cadastrar novo visitante</Text>
+          </Pressable>
+          <VisitorCard />
+          <VisitorCard />
+          <VisitorCard />
+          <VisitorCard />
+        </View>
+      </ScrollView>
+      <Footer />
     </View>
   );
 }
@@ -33,7 +40,10 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 20,
+    flex: 1,
     gap: 20,
+    backgroundColor: "#F9FAFB",
+    borderColor: "#E0E6EB",
   },
 
   viewWelcome: {
