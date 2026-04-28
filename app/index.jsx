@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -6,6 +7,7 @@ import VisitorCard from "../components/VisitorCard";
 import IconAddPlus from "../icons/iconAddPlus";
 
 export default function Index() {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.container}>
       <Header />
@@ -17,7 +19,10 @@ export default function Index() {
               Gerencie seus visitantes recorrentes
             </Text>
           </View>
-          <Pressable style={styles.buttonAdd}>
+          <Pressable
+            style={styles.buttonAdd}
+            onPress={() => setModalVisible(true)}
+          >
             <View style={styles.iconCircle}>
               <IconAddPlus width={20} height={20} />
             </View>
@@ -30,7 +35,10 @@ export default function Index() {
         </View>
       </ScrollView>
       <Footer />
-      <ModalNewVisitor />
+      <ModalNewVisitor
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }

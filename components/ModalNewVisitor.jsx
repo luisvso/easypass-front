@@ -15,16 +15,16 @@ import IconFloppyDisk from "../icons/iconFloppyDisk";
 import IconNote from "../icons/iconNote";
 import IconPhone from "../icons/iconPhone";
 
-export default function ModalNewVisitor() {
+export default function ModalNewVisitor({ isVisible, onClose }) {
   const [focusedInput, setFocusedInput] = useState(null);
 
   return (
-    <Modal transparent={true} visible={true}>
+    <Modal transparent={true} visible={isVisible}>
       <BlurView style={styles.overlay} intensity={25} tint="dark">
         <View style={styles.modalContent}>
           <View style={styles.headerModal}>
             <Text style={styles.textHeaderModal}>Novo visitante</Text>
-            <Pressable>
+            <Pressable onPress={onClose}>
               <IconX width={15} height={15} />
             </Pressable>
           </View>
