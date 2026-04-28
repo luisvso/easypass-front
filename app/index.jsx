@@ -1,6 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import ModalNewVisitor from "../components/ModalNewVisitor";
 import VisitorCard from "../components/VisitorCard";
 import IconAddPlus from "../icons/iconAddPlus";
 
@@ -29,6 +30,7 @@ export default function Index() {
         </View>
       </ScrollView>
       <Footer />
+      <ModalNewVisitor />
     </View>
   );
 }
