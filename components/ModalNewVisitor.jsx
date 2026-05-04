@@ -15,8 +15,28 @@ import IconFloppyDisk from "../icons/iconFloppyDisk";
 import IconNote from "../icons/iconNote";
 import IconPhone from "../icons/iconPhone";
 
-export default function ModalNewVisitor({ isVisible, onClose }) {
+export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
   const [focusedInput, setFocusedInput] = useState(null);
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [note, setNote] = useState("");
+
+  const savesData = () => {
+    const visitorData = {
+      name: name,
+      cpf: cpf,
+      phoneNumber: phoneNumber,
+      note: note,
+    };
+
+    onAddVisitor(visitorData);
+    onClose();
+    setName("");
+    setCpf("");
+    setPhoneNumber("");
+    setNote("");
+  };
 
   return (
     <Modal transparent={true} visible={isVisible}>
@@ -38,6 +58,8 @@ export default function ModalNewVisitor({ isVisible, onClose }) {
             >
               <IconVisitor width={15} height={15} />
               <TextInput
+                onChangeText={setName}
+                value={name}
                 style={styles.input}
                 placeholder="Nome do visitante"
                 placeholderTextColor="#9AA8B6"
@@ -54,6 +76,8 @@ export default function ModalNewVisitor({ isVisible, onClose }) {
             >
               <IconCard width={15} height={15} />
               <TextInput
+                onChangeText={setCpf}
+                value={cpf}
                 style={styles.input}
                 placeholder="000.000.00-00"
                 placeholderTextColor="#9AA8B6"
@@ -70,6 +94,8 @@ export default function ModalNewVisitor({ isVisible, onClose }) {
             >
               <IconPhone width={15} height={15} />
               <TextInput
+                onChangeText={setPhoneNumber}
+                value={phoneNumber}
                 style={styles.input}
                 placeholder="(71) 99999-0000"
                 placeholderTextColor="#9AA8B6"
@@ -86,6 +112,8 @@ export default function ModalNewVisitor({ isVisible, onClose }) {
             >
               <IconNote width={15} height={15} />
               <TextInput
+                onChangeText={setNote}
+                value={note}
                 style={styles.input}
                 placeholder="Ex: técnico, familiar, etc."
                 placeholderTextColor="#9AA8B6"
@@ -94,7 +122,7 @@ export default function ModalNewVisitor({ isVisible, onClose }) {
               />
             </View>
           </View>
-          <Pressable style={styles.registerVisitorButton}>
+          <Pressable style={styles.registerVisitorButton} onPress={savesData}>
             <IconFloppyDisk width={18} height={18} />
             <Text style={styles.textRegisterVisitorButton}>
               Cadastrar visitante

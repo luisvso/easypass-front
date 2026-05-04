@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import ModalNewVisitor from "../components/ModalNewVisitor";
@@ -8,6 +15,8 @@ import IconAddPlus from "../icons/iconAddPlus";
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [visitors, setVisitors] = useState([]);
+
   return (
     <View style={styles.container}>
       <Header />
@@ -28,16 +37,23 @@ export default function Index() {
             </View>
             <Text style={styles.buttonText}>Cadastrar novo visitante</Text>
           </Pressable>
-          <VisitorCard />
-          <VisitorCard />
-          <VisitorCard />
-          <VisitorCard />
+          <FlatList
+            data={visitors}
+            contentContainerStyle={{ gap: 16 }}
+            keyExtractor={(item) => item.cpf}
+            renderItem={({ item }) => {
+              return <VisitorCard visitor={item} />;
+            }}
+          />
         </View>
       </ScrollView>
       <Footer />
       <ModalNewVisitor
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
+        onAddVisitor={(dados) => {
+          setVisitors([...visitors, dados]);
+        }}
       />
     </View>
   );
@@ -96,5 +112,11 @@ const styles = StyleSheet.create({
     color: "#1D3A5D",
     fontSize: 16,
     fontWeight: "bold",
+  },
+
+  separador: {
+    height: 10, // Altura do espaço
+    backgroundColor: "#ccc", // Cor da linha (opcional)
+    width: "100%",
   },
 });

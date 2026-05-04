@@ -4,7 +4,7 @@ import IconPencil from "../icons/iconPencil";
 import IconQRcode from "../icons/iconQRcode";
 import IconVisitor from "../icons/IconVisitor";
 
-export default function VisitorCard() {
+export default function VisitorCard({ visitor }) {
   return (
     <View style={styles.viewCardVisitor}>
       <View style={styles.viewInfoVisitor}>
@@ -13,11 +13,11 @@ export default function VisitorCard() {
         </View>
 
         <View style={styles.visitorData}>
-          <Text style={styles.textNameVisitor}>Fernanda Lima</Text>
+          <Text style={styles.textNameVisitor}>{visitor.name}</Text>
           <Text style={styles.textInfoVisitor}>
-            CPF: 456.789.123-22 · (11) 97654-3210
+            {visitor.cpf} · {visitor.phoneNumber}
           </Text>
-          <Text style={styles.textNote}>Amiga</Text>
+          <Text style={styles.textNote}>{visitor.note}</Text>
         </View>
       </View>
 
