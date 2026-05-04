@@ -44,7 +44,6 @@ export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
     setCpf("");
     setPhoneNumber("");
     setNote("");
-    console.log(visitorData);
   };
 
   return (
