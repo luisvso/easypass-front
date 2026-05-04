@@ -1,5 +1,6 @@
 import IconVisitor from "@/icons/IconVisitor";
 import { BlurView } from "expo-blur";
+import * as Crypto from "expo-crypto";
 import { useState } from "react";
 import {
   Modal,
@@ -21,13 +22,20 @@ export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
   const [cpf, setCpf] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [note, setNote] = useState("");
+  const [id, setId] = useState("");
+  const generateId = () => {
+    const newId = Crypto.randomUUID();
+    setId(newId);
+  };
 
   const savesData = () => {
+    generateId();
     const visitorData = {
       name: name,
       cpf: cpf,
       phoneNumber: phoneNumber,
       note: note,
+      id: id,
     };
 
     onAddVisitor(visitorData);
@@ -36,6 +44,7 @@ export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
     setCpf("");
     setPhoneNumber("");
     setNote("");
+    console.log(visitorData);
   };
 
   return (

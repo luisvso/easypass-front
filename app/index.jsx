@@ -17,6 +17,10 @@ export default function Index() {
   const [modalVisible, setModalVisible] = useState(false);
   const [visitors, setVisitors] = useState([]);
 
+  const deleteVisitor = (id) => {
+    setVisitors(visitors.filter((visitor) => visitor.id !== id));
+  };
+
   return (
     <View style={styles.container}>
       <Header />
@@ -42,7 +46,9 @@ export default function Index() {
             contentContainerStyle={{ gap: 16 }}
             keyExtractor={(item) => item.cpf}
             renderItem={({ item }) => {
-              return <VisitorCard visitor={item} />;
+              return (
+                <VisitorCard visitor={item} deleteVisitor={deleteVisitor} />
+              );
             }}
           />
         </View>
@@ -112,11 +118,5 @@ const styles = StyleSheet.create({
     color: "#1D3A5D",
     fontSize: 16,
     fontWeight: "bold",
-  },
-
-  separador: {
-    height: 10, // Altura do espaço
-    backgroundColor: "#ccc", // Cor da linha (opcional)
-    width: "100%",
   },
 });

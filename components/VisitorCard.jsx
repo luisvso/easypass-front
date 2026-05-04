@@ -4,7 +4,7 @@ import IconPencil from "../icons/iconPencil";
 import IconQRcode from "../icons/iconQRcode";
 import IconVisitor from "../icons/IconVisitor";
 
-export default function VisitorCard({ visitor }) {
+export default function VisitorCard({ visitor, deleteVisitor }) {
   return (
     <View style={styles.viewCardVisitor}>
       <View style={styles.viewInfoVisitor}>
@@ -31,7 +31,10 @@ export default function VisitorCard({ visitor }) {
           <IconPencil width={15} height={15} />
           <Text style={styles.textButtonEdit}>Editar</Text>
         </Pressable>
-        <Pressable style={styles.buttonDelete}>
+        <Pressable
+          style={styles.buttonDelete}
+          onPress={() => deleteVisitor(visitor.id)}
+        >
           <IconBin width={15} height={15} />
           <Text style={styles.textbuttonDelete}>Excluir</Text>
         </Pressable>
