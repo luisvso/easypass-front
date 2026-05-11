@@ -13,9 +13,9 @@ export default function VisitorCard({ visitor, deleteVisitor }) {
         </View>
 
         <View style={styles.visitorData}>
-          <Text style={styles.textNameVisitor}>{visitor.name}</Text>
+          <Text style={styles.textNameVisitor}>{visitor.visitorName}</Text>
           <Text style={styles.textInfoVisitor}>
-            {visitor.cpf} · {visitor.phoneNumber}
+            {visitor.visitorCpf} · {visitor.visitorPhoneNumber}
           </Text>
           <Text style={styles.textNote}>{visitor.note}</Text>
         </View>

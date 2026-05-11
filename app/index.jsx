@@ -21,6 +21,10 @@ export default function Index() {
     setVisitors(visitors.filter((visitor) => visitor.id !== id));
   };
 
+  const addNewVisitor = (newVisitor) => {
+    setVisitors((prev) => [...prev, newVisitor]);
+  };
+
   return (
     <View style={styles.container}>
       <Header />
@@ -44,7 +48,7 @@ export default function Index() {
           <FlatList
             data={visitors}
             contentContainerStyle={{ gap: 16 }}
-            keyExtractor={(item) => item.cpf}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
               return (
                 <VisitorCard visitor={item} deleteVisitor={deleteVisitor} />
@@ -57,9 +61,7 @@ export default function Index() {
       <ModalNewVisitor
         isVisible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onAddVisitor={(dados) => {
-          setVisitors([...visitors, dados]);
-        }}
+        onAddVisitor={addNewVisitor}
       />
     </View>
   );

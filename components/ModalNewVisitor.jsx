@@ -1,7 +1,10 @@
 import IconVisitor from "@/icons/IconVisitor";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { cpf } from "cpf-cnpj-validator";
 import { BlurView } from "expo-blur";
 import * as Crypto from "expo-crypto";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Modal,
   Pressable,
@@ -10,41 +13,49 @@ import {
   TextInput,
   View,
 } from "react-native";
+import * as yup from "yup";
 import IconX from "../icons/IconX";
 import IconCard from "../icons/iconCard";
 import IconFloppyDisk from "../icons/iconFloppyDisk";
 import IconNote from "../icons/iconNote";
 import IconPhone from "../icons/iconPhone";
 
+const schema = yup.object({
+  visitorName: yup.string().required("Informe o nome do visitante"),
+  visitorCpf: yup
+    .string()
+    .test("cpf-is-valid", "CPF inválido", (value) => cpf.isValid(value)),
+  visitorPhoneNumber: yup
+    .string()
+    .required("Informe o telefone do visitante")
+    .matches(/^[1-9]{2}9[0-9]{8}$/, "Telefone inválido"),
+});
+
 export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
   const [focusedInput, setFocusedInput] = useState(null);
-  const [name, setName] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [note, setNote] = useState("");
-  const [id, setId] = useState("");
-  const generateId = () => {
-    const newId = Crypto.randomUUID();
-    setId(newId);
-  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      visitorName: "",
+      visitorCpf: "",
+      visitorPhoneNumber: "",
+      note: "",
+    },
+  });
 
-  const savesData = () => {
-    generateId();
-    const visitorData = {
-      name: name,
-      cpf: cpf,
-      phoneNumber: phoneNumber,
-      note: note,
-      id: id,
-    };
-
-    onAddVisitor(visitorData);
+  function handleRegisterVisitor(data) {
+    onAddVisitor({
+      ...data,
+      id: Crypto.randomUUID(),
+    });
+    reset();
     onClose();
-    setName("");
-    setCpf("");
-    setPhoneNumber("");
-    setNote("");
-  };
+  }
 
   return (
     <Modal transparent={true} visible={isVisible}>
@@ -62,55 +73,101 @@ export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
               style={[
                 styles.inputContainer,
                 focusedInput === "name" && styles.inputContainerFocused,
+                {
+                  borderWidth: errors.visitorName && 1,
+                  borderColor: errors.visitorName && "#ff375b",
+                },
               ]}
             >
               <IconVisitor width={15} height={15} />
-              <TextInput
-                onChangeText={setName}
-                value={name}
-                style={styles.input}
-                placeholder="Nome do visitante"
-                placeholderTextColor="#9AA8B6"
-                onFocus={() => setFocusedInput("name")}
-                onBlur={() => setFocusedInput(null)}
+              <Controller
+                control={control}
+                name="visitorName"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={styles.input}
+                    placeholder="Nome do visitante"
+                    placeholderTextColor="#9AA8B6"
+                    onFocus={() => setFocusedInput("name")}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </View>
+            {errors.visitorName && (
+              <Text style={styles.labelError}>
+                {errors.visitorName?.message}
+              </Text>
+            )}
             <Text style={styles.label}>CPF *</Text>
             <View
               style={[
                 styles.inputContainer,
                 focusedInput === "cpf" && styles.inputContainerFocused,
+                {
+                  borderWidth: errors.visitorCpf && 1,
+                  borderColor: errors.visitorCpf && "#ff375b",
+                },
               ]}
             >
               <IconCard width={15} height={15} />
-              <TextInput
-                onChangeText={setCpf}
-                value={cpf}
-                style={styles.input}
-                placeholder="000.000.00-00"
-                placeholderTextColor="#9AA8B6"
-                onFocus={() => setFocusedInput("cpf")}
-                onBlur={() => setFocusedInput(null)}
+              <Controller
+                control={control}
+                name="visitorCpf"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    onChange={onChange}
+                    value={value}
+                    style={styles.input}
+                    placeholder="000.000.00-00"
+                    placeholderTextColor="#9AA8B6"
+                    onFocus={() => setFocusedInput("cpf")}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </View>
+            {errors.visitorCpf && (
+              <Text style={styles.labelError}>
+                {errors.visitorCpf?.message}
+              </Text>
+            )}
             <Text style={styles.label}>TELEFONE</Text>
             <View
               style={[
                 styles.inputContainer,
                 focusedInput === "phone" && styles.inputContainerFocused,
+                {
+                  borderWidth: errors.visitorPhoneNumber && 1,
+                  borderColor: errors.visitorPhoneNumber && "#ff375b",
+                },
               ]}
             >
               <IconPhone width={15} height={15} />
-              <TextInput
-                onChangeText={setPhoneNumber}
-                value={phoneNumber}
-                style={styles.input}
-                placeholder="(71) 99999-0000"
-                placeholderTextColor="#9AA8B6"
-                onFocus={() => setFocusedInput("phone")}
-                onBlur={() => setFocusedInput(null)}
+              <Controller
+                control={control}
+                name="visitorPhoneNumber"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    onChange={onChange}
+                    value={value}
+                    style={styles.input}
+                    placeholder="(71) 99999-0000"
+                    placeholderTextColor="#9AA8B6"
+                    onFocus={() => setFocusedInput("phone")}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </View>
+            {errors.visitorPhoneNumber && (
+              <Text style={styles.labelError}>
+                {errors.visitorPhoneNumber?.message}
+              </Text>
+            )}
+
             <Text style={styles.label}>OBSERVAÇÕES</Text>
             <View
               style={[
@@ -119,18 +176,27 @@ export default function ModalNewVisitor({ isVisible, onClose, onAddVisitor }) {
               ]}
             >
               <IconNote width={15} height={15} />
-              <TextInput
-                onChangeText={setNote}
-                value={note}
-                style={styles.input}
-                placeholder="Ex: técnico, familiar, etc."
-                placeholderTextColor="#9AA8B6"
-                onFocus={() => setFocusedInput("note")}
-                onBlur={() => setFocusedInput(null)}
+              <Controller
+                control={control}
+                name="note"
+                render={({ field: { onBlur, onChange, value } }) => (
+                  <TextInput
+                    onChange={onChange}
+                    value={value}
+                    style={styles.input}
+                    placeholder="Ex: técnico, familiar, etc."
+                    placeholderTextColor="#9AA8B6"
+                    onFocus={() => setFocusedInput("note")}
+                    onBlur={onBlur}
+                  />
+                )}
               />
             </View>
           </View>
-          <Pressable style={styles.registerVisitorButton} onPress={savesData}>
+          <Pressable
+            style={styles.registerVisitorButton}
+            onPress={handleSubmit(handleRegisterVisitor)}
+          >
             <IconFloppyDisk width={18} height={18} />
             <Text style={styles.textRegisterVisitorButton}>
               Cadastrar visitante
@@ -228,5 +294,10 @@ const styles = StyleSheet.create({
   textRegisterVisitorButton: {
     color: "#FFFF",
     fontWeight: "bold",
+  },
+
+  labelError: {
+    alignSelf: "flex-start",
+    color: "#ff375b",
   },
 });
