@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import IconClock from "../icons/iconClock";
 import IconVisitor from "../icons/IconVisitor";
@@ -6,19 +7,24 @@ import IconVisitors from "../icons/iconVisitors";
 export default function Footer() {
   return (
     <View style={styles.footer}>
-      <Pressable style={styles.buttonFooter}>
-        <IconVisitors width={20} height={20} />
-        <Text style={styles.textActive}>Visitantes</Text>
-        <View style={styles.activeIndicator} />
-      </Pressable>
+      <Link href="/" asChild>
+        <Pressable style={styles.buttonFooter}>
+          <IconVisitors width={20} height={20} />
+          <Text style={styles.textActive}>Visitantes</Text>
+          <View style={styles.activeIndicator} />
+        </Pressable>
+      </Link>
+
       <Pressable style={styles.buttonFooter}>
         <IconClock width={20} height={20} />
         <Text>Histórico</Text>
       </Pressable>
-      <Pressable style={styles.buttonFooter}>
-        <IconVisitor width={20} height={20} />
-        <Text>Perfil</Text>
-      </Pressable>
+      <Link href="/profile" asChild>
+        <Pressable style={styles.buttonFooter}>
+          <IconVisitor width={20} height={20} />
+          <Text>Perfil</Text>
+        </Pressable>
+      </Link>
     </View>
   );
 }

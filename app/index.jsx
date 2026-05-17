@@ -28,7 +28,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Header />
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: "#F9FAFB" }}>
         <View style={styles.content}>
           <View style={styles.viewWelcome}>
             <Text style={styles.title}>Olá, Guilherme</Text>
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     gap: 20,
-    backgroundColor: "#F9FAFB",
     borderColor: "#E0E6EB",
   },
 
